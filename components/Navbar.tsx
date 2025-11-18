@@ -14,6 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
     { id: AppView.TRACKING, label: 'Rastreo GPS', icon: <Radar className="w-4 h-4" /> },
     { id: AppView.FLEET, label: 'Equipo', icon: <Truck className="w-4 h-4" /> },
     { id: AppView.ROUTES, label: 'Rutas', icon: <Map className="w-4 h-4" /> },
+    { id: AppView.ROUTE_BUILDER, label: 'Constructor', icon: <Zap className="w-4 h-4" /> },
     { id: AppView.FINANCIALS, label: 'Finanzas', icon: <PieChart className="w-4 h-4" /> },
     { id: AppView.COMPLIANCE, label: 'Cumplimiento', icon: <FileCheck className="w-4 h-4" /> },
   ];

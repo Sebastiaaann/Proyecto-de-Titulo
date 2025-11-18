@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import Dashboard from './components/Dashboard';
 import FleetManager from './components/FleetManager';
 import RoutePlanner from './components/RoutePlanner';
+import RouteBuilder from './components/RouteBuilder';
 import Financials from './components/Financials';
 import Compliance from './components/Compliance';
 import FleetTracking from './components/FleetTracking';
@@ -25,6 +26,8 @@ const App: React.FC = () => {
         return <FleetManager />;
       case AppView.ROUTES:
         return <RoutePlanner />;
+      case AppView.ROUTE_BUILDER:
+        return <RouteBuilder />;
       case AppView.FINANCIALS:
         return <Financials />;
       case AppView.COMPLIANCE:
