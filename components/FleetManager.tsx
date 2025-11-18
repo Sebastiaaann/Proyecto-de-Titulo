@@ -2,17 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { Driver, Vehicle } from '../types';
 import { Search, Plus, MoreHorizontal, User, Truck, FileText, AlertTriangle, X, Save, Trash2, Edit2, CheckCircle } from 'lucide-react';
 
-// Helper: Chilean RUT Formatter/Validator
+// Helper: Chilean RUT Formatter
 const formatRut = (rut: string) => {
   const clean = rut.replace(/[^0-9kK]/g, '');
   if (clean.length <= 1) return clean;
   const body = clean.slice(0, -1);
   const dv = clean.slice(-1).toUpperCase();
+  // Optional: Add dots for better readability e.g., 12.345.678-9
+  // For now, keeping it simple as requested in previous prompt: 12345678-9
   return `${body}-${dv}`;
 };
 
-const validateRut = (rut: string) => {
-  return /^[0-9]+-[0-9kK]{1}$/.test(rut) && rut.length > 7;
+// Helper: Chilean RUT Validator (Modulo 11)
+const validateChileanRut = (rut: string): string | null => {
+  if (!rut) return "RUT is required";
+  
+  // Clean to alphanumeric
+  const clean = rut.replace(/[^0-9kK]/g, '');
+  
+  // Check minimum length (e.g. 1.000.000-1 -> 10000001 is 8 chars)
+  // Allowing for older IDs (low millions) which are 7 chars total including DV
+  if (clean.length < 7) return "RUT is too short"; 
+  
+  const body = clean.slice(0, -1);
+  const dv = clean.slice(-1).toUpperCase();
+  
+  // Check body is numbers
+  if (!/^\d+$/.test(body)) return "RUT format invalid";
+
+  // Calculate Expected DV
+  let sum = 0;
+  let multiplier = 2;
+  for (let i = body.length - 1; i >= 0; i--) {
+      sum += parseInt(body[i]) * multiplier;
+      multiplier = multiplier === 7 ? 2 : multiplier + 1;
+  }
+  const mod = 11 - (sum % 11);
+  const expectedDv = mod === 11 ? '0' : mod === 10 ? 'K' : mod.toString();
+
+  if (dv !== expectedDv) return "Invalid Verification Digit (DV)";
+  
+  return null; // Valid
 };
 
 const generateId = () => Math.random().toString(36).substr(2, 9);
@@ -23,7 +53,7 @@ const FleetManager: React.FC = () => {
 
   // --- STATE MANAGEMENT ---
   const [drivers, setDrivers] = useState<Driver[]>([
-    { id: "D-1", name: "Carlos Mendoza", rut: "12345678-9", licenseType: "A5", licenseExpiry: "2025-03-15", status: "On Route" },
+    { id: "D-1", name: "Carlos Mendoza", rut: "12345678-5", licenseType: "A5", licenseExpiry: "2025-03-15", status: "On Route" },
     { id: "D-2", name: "Ana Silva", rut: "15432198-K", licenseType: "A4", licenseExpiry: "2024-11-20", status: "Available" },
     { id: "D-3", name: "Jorge O'Ryan", rut: "9876543-2", licenseType: "A5", licenseExpiry: "2023-12-01", status: "Off Duty" },
   ]);
@@ -82,7 +112,13 @@ const FleetManager: React.FC = () => {
       if (!formData.model) newErrors.model = 'Model is required';
     } else {
       if (!formData.name) newErrors.name = 'Name is required';
-      if (!validateRut(formData.rut)) newErrors.rut = 'Invalid RUT format';
+      
+      // Improved RUT Validation Usage
+      const rutError = validateChileanRut(formData.rut);
+      if (rutError) {
+        newErrors.rut = rutError;
+      }
+
       if (!formData.licenseExpiry) newErrors.licenseExpiry = 'Date required';
     }
 
