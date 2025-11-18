@@ -44,9 +44,7 @@ const Dashboard: React.FC = () => {
              <button className="px-4 py-2 bg-brand-600/20 text-brand-400 border border-brand-600/30 rounded-lg text-sm font-medium hover:bg-brand-600/30 transition-colors">
                 Exportar Reporte (PDF)
              </button>
-             <button className="px-4 py-2 bg-white text-black rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors">
-                Agregar Vehículo
-             </button>
+             
           </div>
         </div>
 

@@ -154,7 +154,7 @@ const FleetManager: React.FC = () => {
         
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <div>
-            <h2 className="text-3xl font-bold text-white">Gestión de Flota</h2>
+            <h2 className="text-3xl font-bold text-white">Gestión del Equipo</h2>
             <p className="text-slate-500 text-sm">Administra activos, personal y documentación de cumplimiento.</p>
           </div>
           <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">

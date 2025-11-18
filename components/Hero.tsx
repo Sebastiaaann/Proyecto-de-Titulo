@@ -22,11 +22,11 @@ const Hero: React.FC<HeroProps> = ({ setView }) => {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
           </span>
-          <span className="text-brand-400 text-xs font-bold tracking-widest uppercase">FleetMaster v2.0 En Vivo</span>
+          <span className="text-brand-400 text-xs font-bold tracking-widest uppercase">FleetMaster </span>
         </div>
         
         <h1 className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tighter leading-[1.1] animate-slide-up">
-          Control Total Sobre <br />
+          Control Total  <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-brand-200 to-accent-400">
             Activos en Movimiento
           </span>
