@@ -1,5 +1,7 @@
 {
-  "name": "FleetMaster - AI Fleet Management",
-  "description": "Premium fleet management platform for logistics optimization, predictive maintenance, and cost control powered by Gemini AI.",
-  "requestFramePermissions": []
+  "name": "FleetMaster - Gestión de Flotas IA",
+  "description": "Plataforma premium de gestión de flotas para optimización logística, mantenimiento predictivo y control de costos impulsado por Gemini AI.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
 }

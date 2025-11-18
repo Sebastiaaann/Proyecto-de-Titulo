@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { AppView } from '../types';
-import { LayoutDashboard, Truck, Map, PieChart, Zap } from 'lucide-react';
+import { LayoutDashboard, Truck, Map, PieChart, Zap, FileCheck, Radar } from 'lucide-react';
 
 interface NavbarProps {
   currentView: AppView;
@@ -10,9 +11,11 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
   const navItems = [
     { id: AppView.DASHBOARD, label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { id: AppView.FLEET, label: 'Fleet & Drivers', icon: <Truck className="w-4 h-4" /> },
-    { id: AppView.ROUTES, label: 'Route Planner', icon: <Map className="w-4 h-4" /> },
-    { id: AppView.FINANCIALS, label: 'Financials', icon: <PieChart className="w-4 h-4" /> },
+    { id: AppView.TRACKING, label: 'Rastreo GPS', icon: <Radar className="w-4 h-4" /> },
+    { id: AppView.FLEET, label: 'Flota', icon: <Truck className="w-4 h-4" /> },
+    { id: AppView.ROUTES, label: 'Rutas', icon: <Map className="w-4 h-4" /> },
+    { id: AppView.FINANCIALS, label: 'Finanzas', icon: <PieChart className="w-4 h-4" /> },
+    { id: AppView.COMPLIANCE, label: 'Cumplimiento', icon: <FileCheck className="w-4 h-4" /> },
   ];
 
   return (
@@ -31,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
                 <span className="text-xl font-bold tracking-tighter text-white leading-none">
                   FLEET<span className="text-brand-500">MASTER</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-semibold">Logistics OS</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-semibold">OS Logístico</span>
             </div>
           </div>
           
@@ -59,7 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
           <div className="flex items-center gap-4">
              <div className="hidden md:flex items-center gap-3 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-xs font-mono text-slate-400">SYSTEM ONLINE</span>
+                <span className="text-xs font-mono text-slate-400">SISTEMA ONLINE</span>
              </div>
           </div>
         </div>

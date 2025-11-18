@@ -22,18 +22,18 @@ const Hero: React.FC<HeroProps> = ({ setView }) => {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
           </span>
-          <span className="text-brand-400 text-xs font-bold tracking-widest uppercase">FleetMaster v2.0 Live</span>
+          <span className="text-brand-400 text-xs font-bold tracking-widest uppercase">FleetMaster v2.0 En Vivo</span>
         </div>
         
         <h1 className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tighter leading-[1.1] animate-slide-up">
-          Total Control Over <br />
+          Control Total Sobre <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-brand-200 to-accent-400">
-            Moving Assets
+            Activos en Movimiento
           </span>
         </h1>
 
         <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          The all-in-one platform for logistics leaders. Optimize routes, manage maintenance, and visualize costs with Gemini AI intelligence.
+          La plataforma todo en uno para líderes logísticos. Optimiza rutas, gestiona mantenimientos y visualiza costos con la inteligencia de Gemini AI.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.4s' }}>
@@ -41,22 +41,22 @@ const Hero: React.FC<HeroProps> = ({ setView }) => {
             onClick={() => setView(AppView.DASHBOARD)}
             className="px-8 py-4 bg-white text-black rounded-lg font-bold text-lg transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] flex items-center gap-2"
           >
-            Launch Dashboard <ArrowRight className="w-5 h-5" />
+            Abrir Dashboard <ArrowRight className="w-5 h-5" />
           </button>
           <button 
             onClick={() => setView(AppView.ROUTES)}
             className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-lg font-medium text-lg transition-all hover:bg-white/10 backdrop-blur-sm"
           >
-            Try Route Planner
+            Probar Planificador
           </button>
         </div>
 
         {/* Features Grid */}
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto animate-fade-in" style={{ animationDelay: '0.6s' }}>
             {[
-              { icon: <Globe className="text-brand-400" />, title: "Live Telemetry", desc: "Real-time GPS tracking with millisecond latency." },
-              { icon: <Activity className="text-accent-400" />, title: "Predictive Maintenance", desc: "AI forecasts repairs before breakdowns occur." },
-              { icon: <Shield className="text-orange-400" />, title: "Compliance & Safety", desc: "Automated license validation and safety scoring." }
+              { icon: <Globe className="text-brand-400" />, title: "Telemetría en Vivo", desc: "Rastreo GPS en tiempo real con latencia mínima." },
+              { icon: <Activity className="text-accent-400" />, title: "Mantenimiento Predictivo", desc: "La IA pronostica reparaciones antes de que ocurran fallas." },
+              { icon: <Shield className="text-orange-400" />, title: "Cumplimiento y Seguridad", desc: "Validación automatizada de licencias y puntuación de seguridad." }
             ].map((feature, idx) => (
               <div key={idx} className="p-8 rounded-2xl glass-card text-left group">
                   <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-white/10">

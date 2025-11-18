@@ -30,8 +30,8 @@ const RoutePlanner: React.FC = () => {
       
       {/* Header */}
       <div className="w-full max-w-6xl mb-8 animate-fade-in">
-         <h2 className="text-3xl font-bold text-white">Route Optimizer</h2>
-         <p className="text-slate-500">AI-driven route calculation, cost estimation, and load planning.</p>
+         <h2 className="text-3xl font-bold text-white">Optimizador de Rutas</h2>
+         <p className="text-slate-500">Cálculo de rutas impulsado por IA, estimación de costos y planificación de carga.</p>
       </div>
 
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -40,16 +40,16 @@ const RoutePlanner: React.FC = () => {
            <div className="glass-panel p-6 rounded-2xl border border-white/5">
               <div className="space-y-5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Cargo Manifest</label>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Manifiesto de Carga</label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className="w-full h-32 bg-dark-900 border border-white/10 rounded-xl p-4 text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all resize-none"
-                    placeholder="e.g., 12 Pallets of Electronics, approx 4.5 tons. Fragile."
+                    placeholder="ej: 12 Pallets de Electrónicos, aprox 4.5 toneladas. Frágil."
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Route Details</label>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Detalles de Ruta</label>
                   <div className="relative">
                     <Map className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
                     <input
@@ -57,7 +57,7 @@ const RoutePlanner: React.FC = () => {
                         value={distance}
                         onChange={(e) => setDistance(e.target.value)}
                         className="w-full bg-dark-900 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
-                        placeholder="Origin -> Destination (e.g. 250km)"
+                        placeholder="Origen -> Destino (ej: Santiago a Puerto Montt, 1032km)"
                     />
                   </div>
                 </div>
@@ -70,12 +70,12 @@ const RoutePlanner: React.FC = () => {
                   {loading ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      <span>Calculating Route...</span>
+                      <span>Calculando Ruta...</span>
                     </>
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      <span>Generate Plan</span>
+                      <span>Generar Plan</span>
                     </>
                   )}
                 </button>
@@ -88,14 +88,14 @@ const RoutePlanner: React.FC = () => {
             {!result && !loading && (
               <div className="h-full flex flex-col items-center justify-center text-slate-600 border border-dashed border-white/10 rounded-2xl p-8 bg-white/[0.02]">
                 <Map className="w-16 h-16 mb-4 opacity-20" />
-                <p>Enter cargo and route details to begin analysis.</p>
+                <p>Ingresa la carga y detalles de ruta para comenzar el análisis.</p>
               </div>
             )}
 
             {loading && (
               <div className="h-full flex flex-col items-center justify-center bg-white/[0.02] rounded-2xl border border-white/5 backdrop-blur-sm min-h-[400px]">
                  <div className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-                 <p className="mt-4 text-brand-400 font-mono text-sm animate-pulse">ANALYZING TOPOLOGY & COSTS...</p>
+                 <p className="mt-4 text-brand-400 font-mono text-sm animate-pulse">ANALIZANDO TOPOLOGÍA Y COSTOS...</p>
               </div>
             )}
 
@@ -104,25 +104,25 @@ const RoutePlanner: React.FC = () => {
                   <div className="flex items-center justify-between mb-8 pb-6 border-b border-white/10">
                     <div>
                         <h3 className="text-2xl font-bold text-white flex items-center gap-2">
-                        Optimization Complete
+                        Optimización Completa
                         </h3>
-                        <p className="text-slate-400 text-sm mt-1">Generated by Gemini Pro model</p>
+                        <p className="text-slate-400 text-sm mt-1">Generado por modelo Gemini Pro</p>
                     </div>
                     <div className="text-right">
-                         <span className="block text-xs text-slate-500 uppercase font-bold">Confidence</span>
+                         <span className="block text-xs text-slate-500 uppercase font-bold">Confianza</span>
                          <span className="text-xl font-mono text-brand-400">{result.confidenceScore}%</span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     <div className="bg-dark-900/50 p-5 rounded-xl border border-white/5">
-                      <p className="text-slate-500 text-xs uppercase tracking-wider mb-2">Est. Operational Cost</p>
+                      <p className="text-slate-500 text-xs uppercase tracking-wider mb-2">Costo Operativo Est.</p>
                       <p className="text-3xl font-bold text-white flex items-center gap-1">
                         {result.estimatedPrice}
                       </p>
                     </div>
                     <div className="bg-dark-900/50 p-5 rounded-xl border border-white/5">
-                      <p className="text-slate-500 text-xs uppercase tracking-wider mb-2">Transit Time</p>
+                      <p className="text-slate-500 text-xs uppercase tracking-wider mb-2">Tiempo Tránsito</p>
                       <p className="text-3xl font-bold text-white flex items-center gap-1">
                         {result.timeEstimate}
                       </p>
@@ -131,7 +131,7 @@ const RoutePlanner: React.FC = () => {
 
                   <div className="space-y-6">
                     <div>
-                        <p className="text-slate-500 text-xs uppercase tracking-wider mb-3">Recommended Asset</p>
+                        <p className="text-slate-500 text-xs uppercase tracking-wider mb-3">Activo Recomendado</p>
                         <div className="bg-gradient-to-r from-brand-900/50 to-dark-800 text-white p-4 rounded-lg font-medium flex items-center justify-between border border-brand-500/20">
                         <span className="font-mono text-lg">{result.vehicleType}</span>
                         <Truck className="w-5 h-5 text-brand-400" />
@@ -139,7 +139,7 @@ const RoutePlanner: React.FC = () => {
                     </div>
 
                     <div>
-                        <p className="text-slate-500 text-xs uppercase tracking-wider mb-3">AI Strategic Advice</p>
+                        <p className="text-slate-500 text-xs uppercase tracking-wider mb-3">Consejo Estratégico IA</p>
                         <ul className="space-y-3">
                         {result.logisticsAdvice.map((advice, idx) => (
                             <li key={idx} className="flex items-start gap-3 text-sm text-slate-300 bg-white/5 p-3 rounded-lg border border-white/5">

@@ -1,3 +1,4 @@
+
 export interface QuoteResult {
   estimatedPrice: string;
   vehicleType: string;
@@ -25,10 +26,28 @@ export interface Driver {
   status: 'Available' | 'On Route' | 'Off Duty';
 }
 
+export interface MaintenancePrediction {
+  healthScore: number;
+  predictedFailure: string;
+  urgency: 'Low' | 'Medium' | 'High' | 'Critical';
+  recommendedAction: string;
+  estimatedCost: string;
+}
+
+export interface FinancialReport {
+  topDriver: string;
+  mostProfitableRoute: string;
+  costSavingOpportunity: string;
+  efficiencyTrend: string;
+  netProfitMargin: string;
+}
+
 export enum AppView {
   HOME = 'HOME',
   DASHBOARD = 'DASHBOARD',
+  TRACKING = 'TRACKING',
   FLEET = 'FLEET',
   ROUTES = 'ROUTES',
-  FINANCIALS = 'FINANCIALS'
+  FINANCIALS = 'FINANCIALS',
+  COMPLIANCE = 'COMPLIANCE'
 }

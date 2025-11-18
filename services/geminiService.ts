@@ -1,23 +1,26 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
-import { QuoteResult, Vehicle } from "../types";
+import { QuoteResult, Vehicle, MaintenancePrediction, FinancialReport } from "../types";
 
 const apiKey = process.env.API_KEY;
 const ai = new GoogleGenAI({ apiKey: apiKey });
 
-const SYSTEM_INSTRUCTION = `You are FleetMaster AI, a logistics operations expert. 
-Your goal is to optimize fleet performance, reduce costs, and ensure safety.
-Prioritize actionable insights based on data.`;
+// Instructions updated to Spanish
+const SYSTEM_INSTRUCTION = `Eres FleetMaster AI, un experto en operaciones logísticas. 
+Tu objetivo es optimizar el rendimiento de la flota, reducir costos y garantizar la seguridad.
+Prioriza insights accionables basados en datos. Responde SIEMPRE en español.`;
 
 export const generateSmartQuote = async (description: string, distance: string): Promise<QuoteResult> => {
   try {
     const model = "gemini-2.5-flash";
     
     const prompt = `
-      Analyze this freight request:
-      Items/Description: ${description}
-      Approximate Distance: ${distance}
+      Analiza esta solicitud de carga:
+      Items/Descripción: ${description}
+      Distancia Aproximada: ${distance}
 
-      Provide a structured estimation.
+      Proporciona una estimación estructurada en español.
+      Para el precio, usa formato CLP (Pesos Chilenos) o USD si es internacional.
     `;
 
     const response = await ai.models.generateContent({
@@ -29,15 +32,15 @@ export const generateSmartQuote = async (description: string, distance: string):
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            estimatedPrice: { type: Type.STRING, description: "Estimated price range in USD" },
-            vehicleType: { type: Type.STRING, description: "Recommended vehicle type" },
-            timeEstimate: { type: Type.STRING, description: "Estimated duration" },
+            estimatedPrice: { type: Type.STRING, description: "Rango de precio estimado (ej: $150.000 - $200.000 CLP)" },
+            vehicleType: { type: Type.STRING, description: "Tipo de vehículo recomendado en español" },
+            timeEstimate: { type: Type.STRING, description: "Duración estimada en español" },
             logisticsAdvice: { 
               type: Type.ARRAY, 
               items: { type: Type.STRING },
-              description: "3 bullet points of professional advice"
+              description: "3 puntos de consejo profesional en español para optimizar esta ruta"
             },
-            confidenceScore: { type: Type.NUMBER, description: "Confidence score 0-100" }
+            confidenceScore: { type: Type.NUMBER, description: "Puntaje de confianza 0-100" }
           },
           required: ["estimatedPrice", "vehicleType", "timeEstimate", "logisticsAdvice", "confidenceScore"]
         }
@@ -55,7 +58,7 @@ export const generateSmartQuote = async (description: string, distance: string):
       estimatedPrice: "$0 - $0",
       vehicleType: "Error",
       timeEstimate: "N/A",
-      logisticsAdvice: ["Service temporarily unavailable."],
+      logisticsAdvice: ["Servicio temporalmente no disponible."],
       confidenceScore: 0
     };
   }
@@ -63,19 +66,19 @@ export const generateSmartQuote = async (description: string, distance: string):
 
 export const analyzeFleetHealth = async (vehicles: Vehicle[]): Promise<string> => {
   try {
-    const vehicleSummary = vehicles.map(v => `${v.model} (${v.status}): ${v.mileage}km, Fuel: ${v.fuelLevel}%`).join('; ');
+    const vehicleSummary = vehicles.map(v => `${v.model} (${v.status}): ${v.mileage}km, Combustible: ${v.fuelLevel}%`).join('; ');
     
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Analyze this fleet status snapshot: [${vehicleSummary}]. 
-      Provide a 2-sentence executive summary on operational readiness and one specific maintenance recommendation.`,
+      contents: `Analiza esta instantánea del estado de la flota: [${vehicleSummary}]. 
+      Proporciona un resumen ejecutivo de 2 oraciones en español sobre la preparación operativa y una recomendación de mantenimiento específica.`,
       config: {
-        systemInstruction: "You are a fleet manager assistant. Be concise and professional."
+        systemInstruction: "Eres un asistente de gerente de flota. Sé conciso, profesional y responde en español."
       }
     });
-    return response.text || "Fleet analysis unavailable.";
+    return response.text || "Análisis de flota no disponible.";
   } catch (error) {
-    return "AI Analysis systems offline.";
+    return "Sistemas de análisis AI fuera de línea.";
   }
 };
 
@@ -83,13 +86,81 @@ export const analyzeRouteRisks = async (origin: string, destination: string): Pr
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Analyze the route from ${origin} to ${destination} for a heavy goods vehicle. 
-      Identify potential risks such as weather conditions, traffic congestion patterns, or terrain challenges.
-      Provide a concise 1-sentence risk assessment.`,
+      contents: `Analiza la ruta desde ${origin} hasta ${destination} para un vehículo de carga pesada en el sur de Chile. 
+      Identifica riesgos potenciales como condiciones climáticas, patrones de tráfico o desafíos del terreno.
+      Proporciona una evaluación de riesgo concisa de 1 oración en español.`,
     });
-    return response.text || "Route risk analysis unavailable.";
+    return response.text || "Análisis de riesgo de ruta no disponible.";
   } catch (error) {
     console.error("Route Analysis Error:", error);
-    return "Route analysis temporarily unavailable.";
+    return "Análisis de ruta temporalmente no disponible.";
+  }
+};
+
+// NEW: Predictive Maintenance Logic
+export const predictMaintenance = async (vehicle: Vehicle): Promise<MaintenancePrediction> => {
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `Realiza un diagnóstico predictivo para un ${vehicle.model} con ${vehicle.mileage}km. Último servicio fue hace 6 meses.
+      Basado en patrones de desgaste estándar para este kilometraje, ¿qué es probable que falle pronto?`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            healthScore: { type: Type.NUMBER, description: "Salud general del vehículo 0-100" },
+            predictedFailure: { type: Type.STRING, description: "Componente con mayor riesgo de falla (ej: Frenos, Transmisión)" },
+            urgency: { type: Type.STRING, enum: ["Low", "Medium", "High", "Critical"] },
+            recommendedAction: { type: Type.STRING, description: "Acción recomendada breve" },
+            estimatedCost: { type: Type.STRING, description: "Costo estimado en CLP" }
+          },
+          required: ["healthScore", "predictedFailure", "urgency", "recommendedAction", "estimatedCost"]
+        }
+      }
+    });
+    return JSON.parse(response.text!) as MaintenancePrediction;
+  } catch (error) {
+    console.error(error);
+    return {
+      healthScore: 50,
+      predictedFailure: "Error en análisis",
+      urgency: "Medium",
+      recommendedAction: "Revisión manual requerida",
+      estimatedCost: "$0 CLP"
+    };
+  }
+};
+
+// NEW: Financial Analysis Logic
+export const analyzeFinancials = async (routesData: any[]): Promise<FinancialReport> => {
+  try {
+    const dataStr = JSON.stringify(routesData);
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `Analiza estos datos financieros de rutas recientes: ${dataStr}. Identifica qué conductor y ruta generaron mejor margen.`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+                topDriver: { type: Type.STRING, description: "Nombre del conductor más rentable" },
+                mostProfitableRoute: { type: Type.STRING, description: "Ruta con mejor margen" },
+                costSavingOpportunity: { type: Type.STRING, description: "Dónde se puede ahorrar dinero" },
+                efficiencyTrend: { type: Type.STRING, description: "Tendencia general (Positiva/Negativa)" },
+                netProfitMargin: { type: Type.STRING, description: "Margen promedio %" }
+            }
+        }
+      }
+    });
+    return JSON.parse(response.text!) as FinancialReport;
+  } catch (error) {
+     return {
+         topDriver: "N/A",
+         mostProfitableRoute: "N/A",
+         costSavingOpportunity: "Datos insuficientes",
+         efficiencyTrend: "Estable",
+         netProfitMargin: "0%"
+     };
   }
 };
