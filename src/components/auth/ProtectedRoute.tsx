@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { AppRole } from '../../types/auth.types';
-import PageLoader from '../../../components/PageLoader';
-import { LoginView } from '../../../components/auth/LoginView';
+import { useAuth } from '@hooks/useAuth';
+import type { AppRole } from '../../types/auth.types';
+import PageLoader from '@components/common/PageLoader';
+import { LoginView } from '@components/auth/LoginView';
 
 // Componente temporal de Unauthorized
 const Unauthorized: React.FC = () => (
@@ -20,15 +20,18 @@ interface ProtectedRouteProps {
 
 /**
  * Componente de ruta protegida compatible con Zustand y Dark Mode
+ * NOTA: Actualmente deshabilitado para permitir acceso completo durante desarrollo
  */
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   requiredRole,
   fallback,
 }) => {
+  // MODO DESARROLLO: Permitir acceso completo sin restricciones
+  // Descomentar el código siguiente para habilitar protección de rutas
+
+  /*
   const { isAuthenticated, hasRole, loading } = useAuth();
-  // No necesitamos setView aquí porque el componente Renderiza UI alternativa,
-  // no redirige (a menos que lo programemos explícitamente).
 
   // 1. Loading State
   if (loading) {
@@ -37,23 +40,18 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // 2. No Autenticado
   if (!isAuthenticated) {
-    // Si se provee un fallback (ej: un botón de "Logueate para ver más"), úsalo.
     if (fallback) return <>{fallback}</>;
-    
-    // De lo contrario, mostramos la vista de Login integrada
     return <LoginView />;
   }
 
   // 3. Verificación de Rol
   if (requiredRole && !hasRole(requiredRole)) {
-    // Si hay fallback custom, renderizarlo
     if (fallback) return <>{fallback}</>;
-
-    // Si no, mostrar la pantalla estándar de "Acceso Denegado" (Dark Mode)
     return <Unauthorized />;
   }
+  */
 
-  // 4. Éxito: Renderizar contenido protegido
+  // Renderizar contenido sin restricciones
   return <>{children}</>;
 };
 
