@@ -21,6 +21,8 @@ const Financials = React.lazy(() => import('@components/financials/Financials'))
 const Compliance = React.lazy(() => import('@components/dashboard/Compliance'));
 const FleetTracking = React.lazy(() => import('@components/fleet/FleetTracking'));
 const DriverMobile = React.lazy(() => import('@components/fleet/DriverMobile'));
+const PrivacyPolicy = React.lazy(() => import('@components/legal/PrivacyPolicy'));
+const TermsOfService = React.lazy(() => import('@components/legal/TermsOfService'));
 
 import { AppView } from './types/index';
 import { enableDemoMode } from '@utils/demoData';
@@ -105,7 +107,7 @@ const App: React.FC = () => {
     );
   }
 
-  if (!user) {
+  if (!user && currentView !== AppView.PRIVACY_POLICY && currentView !== AppView.TERMS_OF_SERVICE) {
     return (
       <div className="antialiased text-slate-200">
         <ToastProvider />
@@ -137,6 +139,10 @@ const App: React.FC = () => {
         return <Compliance />;
       case AppView.DRIVER_MOBILE:
         return <DriverMobile />;
+      case AppView.PRIVACY_POLICY:
+        return <PrivacyPolicy />;
+      case AppView.TERMS_OF_SERVICE:
+        return <TermsOfService />;
       default:
         return <Hero />;
     }
@@ -145,8 +151,8 @@ const App: React.FC = () => {
   // 6. UI Condicional
   const isDriver = profile?.role === 'driver';
   
-  // Ocultar navegación si es driver
-  const showNavigation = !isDriver; 
+  // Ocultar navegación si es driver o si no hay usuario (vista pública)
+  const showNavigation = user && !isDriver; 
 
   return (
     <div className="antialiased text-slate-200 selection:bg-brand-500 selection:text-black font-sans">

@@ -104,7 +104,7 @@ export const generateSmartQuote = async (description: string, distance: string):
   }
   
   try {
-    const model = "gemini-2.5-flash";
+    const model = "gemini-1.5-flash-001";
     
     const prompt = `
       Analiza esta solicitud de carga:
@@ -156,7 +156,7 @@ export const generateSmartQuote = async (description: string, distance: string):
       estimatedPrice: "$0 - $0",
       vehicleType: "Error",
       timeEstimate: "N/A",
-      logisticsAdvice: ["Servicio temporalmente no disponible."],
+      logisticsAdvice: [`Error: ${error instanceof Error ? error.message : String(error)}`],
       confidenceScore: 0
     };
   }
@@ -178,7 +178,7 @@ export const analyzeFleetHealth = async (vehicles: Vehicle[]): Promise<string> =
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-1.5-flash-001",
       contents: `Analiza esta instantánea del estado de la flota: [${vehicleSummary}]. 
       Proporciona un resumen ejecutivo de 2 oraciones en español sobre la preparación operativa y una recomendación de mantenimiento específica.`,
       config: {
@@ -212,7 +212,7 @@ export const analyzeRouteRisks = async (origin: string, destination: string): Pr
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-1.5-flash-001",
       contents: `Analiza la ruta desde ${origin} hasta ${destination} para un vehículo de carga pesada en el sur de Chile. 
       Identifica riesgos potenciales como condiciones climáticas, patrones de tráfico o desafíos del terreno.
       Proporciona una evaluación de riesgo concisa de 1 oración en español.`,
@@ -258,7 +258,7 @@ export const predictMaintenance = async (vehicle: Vehicle): Promise<MaintenanceP
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-1.5-flash-001",
       contents: `Realiza un diagnóstico predictivo para un ${vehicle.model} con ${vehicle.mileage}km. Último servicio fue hace 6 meses.
       Basado en patrones de desgaste estándar para este kilometraje, ¿qué es probable que falle pronto?`,
       config: {
@@ -324,7 +324,7 @@ export const analyzeFinancials = async (routesData: any[]): Promise<FinancialRep
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-1.5-flash-001",
       contents: `Analiza estos datos financieros de rutas recientes: ${dataStr}. Identifica qué conductor y ruta generaron mejor margen.`,
       config: {
         responseMimeType: "application/json",

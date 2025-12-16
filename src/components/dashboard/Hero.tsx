@@ -114,18 +114,6 @@ const Hero: React.FC = () => {
           </button>
         </div>
 
-        {/* Social Proof */}
-        <div className="mt-16 pt-8 border-t border-white/5 animate-fade-in" style={{ animationDelay: '0.5s' }}>
-          <p className="text-sm text-slate-500 mb-6 uppercase tracking-widest font-semibold">Confían en FleetTech</p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-            {['Logística Sur', 'TransAndina', 'CargoChile', 'PacificPort'].map((brand, i) => (
-              <div key={i} className="flex items-center gap-2 text-white font-bold text-xl">
-                <Globe className="w-6 h-6 text-brand-500" /> {brand}
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Features Grid Mejorado */}
         <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto animate-fade-in" style={{ animationDelay: '0.6s' }}>
           {[
@@ -141,6 +129,25 @@ const Hero: React.FC = () => {
               <p className="text-slate-400 text-base leading-relaxed">{feature.desc}</p>
             </div>
           ))}
+        </div>
+        {/* Footer Links */}
+        <div className="mt-24 pb-8 text-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
+          <div className="flex items-center justify-center gap-4">
+            <button 
+              onClick={() => setView(AppView.TERMS_OF_SERVICE)}
+              className="text-sm text-slate-500 hover:text-brand-400 transition-colors bg-transparent border-0 cursor-pointer"
+            >
+              Términos de Servicio
+            </button>
+            <span className="text-slate-700">•</span>
+            <button 
+              onClick={() => setView(AppView.PRIVACY_POLICY)}
+              className="text-sm text-slate-500 hover:text-brand-400 transition-colors bg-transparent border-0 cursor-pointer"
+            >
+              Política de Privacidad
+            </button>
+          </div>
+          <p className="text-xs text-slate-600 mt-4">© 2025 FleetTech Corp. Todos los derechos reservados.</p>
         </div>
       </div>
     </div>

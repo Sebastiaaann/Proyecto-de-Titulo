@@ -192,7 +192,7 @@ const RoutePlanner: React.FC = () => {
                   <h3 className="text-2xl font-bold text-white flex items-center gap-2">
                     Optimización Completa
                   </h3>
-                  <p className="text-slate-400 text-sm mt-1">Generado por modelo Gemini Pro</p>
+                  <p className="text-slate-400 text-sm mt-1">Generado por modelo Gemini 1.5 Flash (001)</p>
                 </div>
                 <div className="text-right">
                   <span className="block text-xs text-slate-500 uppercase font-bold">Confianza</span>

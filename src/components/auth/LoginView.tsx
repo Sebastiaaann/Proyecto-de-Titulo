@@ -8,8 +8,12 @@
 import React from 'react';
 import { Truck, Shield, Zap } from 'lucide-react';
 import LoginForm from '@components/auth/LoginForm';
+import { useStore } from '@store/useStore';
+import { AppView } from '@/types';
 
 export const LoginView: React.FC = () => {
+  const { setView } = useStore();
+
   return (
     <div className="min-h-screen w-full bg-dark-950 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Decoration */}
@@ -150,13 +154,19 @@ export const LoginView: React.FC = () => {
               © 2025 FleetTech Corp. Todos los derechos reservados.
             </p>
             <div className="flex items-center justify-center gap-4 mt-4">
-              <a href="#" className="text-xs text-slate-500 hover:text-brand-400 transition-colors">
+              <button 
+                onClick={() => setView(AppView.TERMS_OF_SERVICE)}
+                className="text-xs text-slate-500 hover:text-brand-400 transition-colors bg-transparent border-0 cursor-pointer"
+              >
                 Términos de Servicio
-              </a>
+              </button>
               <span className="text-slate-700">•</span>
-              <a href="#" className="text-xs text-slate-500 hover:text-brand-400 transition-colors">
+              <button 
+                onClick={() => setView(AppView.PRIVACY_POLICY)}
+                className="text-xs text-slate-500 hover:text-brand-400 transition-colors bg-transparent border-0 cursor-pointer"
+              >
                 Política de Privacidad
-              </a>
+              </button>
               <span className="text-slate-700">•</span>
               <a href="#" className="text-xs text-slate-500 hover:text-brand-400 transition-colors">
                 Soporte
