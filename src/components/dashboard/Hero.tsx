@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ArrowRight, Globe, Activity, Shield, Play, Map } from 'lucide-react';
+import { ArrowRight, Globe, Activity, Shield, Play, Map, Check } from 'lucide-react';
 import { AppView } from '@/types';
 import { useStore } from '@store/useStore';
 
@@ -130,6 +130,121 @@ const Hero: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* Pricing Section */}
+        <div className="mt-32 max-w-7xl mx-auto animate-fade-in" style={{ animationDelay: '0.8s' }}>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Planes Flexibles</h2>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+              Escala tu operación con nuestra tecnología. Sin contratos forzosos, cancela cuando quieras.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Free Plan */}
+            <div className="relative p-6 rounded-3xl bg-white/[0.02] border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300 group">
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-white mb-2">Gratis</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white">$0</span>
+                  <span className="text-slate-500">/mes</span>
+                </div>
+                <p className="text-slate-400 mt-4 text-sm">Para probar la plataforma sin compromiso.</p>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {['1 Vehículo', 'Gestión Manual', 'Sin App Móvil', 'Soporte Comunitario'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3 text-slate-300 text-sm">
+                    <div className="p-1 rounded-full bg-white/10 text-white">
+                      <Check className="w-3 h-3" />
+                    </div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button className="w-full py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold border border-white/10 transition-all">
+                Crear Cuenta
+              </button>
+            </div>
+
+            {/* Starter Plan */}
+            <div className="relative p-6 rounded-3xl bg-white/[0.02] border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300 group">
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-white mb-2">Starter</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white">$25.000</span>
+                  <span className="text-slate-500">/mes</span>
+                </div>
+                <p className="text-slate-400 mt-4 text-sm">Perfecto para pequeñas flotas y startups.</p>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {['Hasta 5 vehículos', 'Rastreo GPS Básico', 'App para Conductores', 'Soporte por Email'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3 text-slate-300 text-sm">
+                    <div className="p-1 rounded-full bg-white/10 text-white">
+                      <Check className="w-3 h-3" />
+                    </div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button className="w-full py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold border border-white/10 transition-all">
+                Comenzar Gratis
+              </button>
+            </div>
+
+            {/* Pro Plan */}
+            <div className="relative p-6 rounded-3xl bg-gradient-to-b from-brand-900/20 to-dark-900/50 border border-brand-500/30 backdrop-blur-md transform lg:-translate-y-4 shadow-2xl shadow-brand-500/10">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                Más Popular
+              </div>
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-white mb-2">Pro</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white">$75.000</span>
+                  <span className="text-slate-500">/mes</span>
+                </div>
+                <p className="text-brand-200/80 mt-4 text-sm">Para empresas en crecimiento que necesitan control total.</p>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {['Hasta 20 vehículos', 'IA Predictiva', 'Optimización de Rutas', 'Alertas de Seguridad', 'Soporte Prioritario 24/7'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3 text-white text-sm">
+                    <div className="p-1 rounded-full bg-brand-500 text-black">
+                      <Check className="w-3 h-3" />
+                    </div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button className="w-full py-4 rounded-xl bg-brand-500 hover:bg-brand-400 text-black font-bold transition-all shadow-lg shadow-brand-500/25">
+                Prueba Pro 14 días
+              </button>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div className="relative p-6 rounded-3xl bg-white/[0.02] border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300 group">
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-white mb-2">Enterprise</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white">Custom</span>
+                </div>
+                <p className="text-slate-400 mt-4 text-sm">Soluciones a medida para grandes operaciones.</p>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {['Vehículos Ilimitados', 'API Access', 'Gestor de Cuenta Dedicado', 'SLA Garantizado', 'On-premise Deployment'].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3 text-slate-300 text-sm">
+                    <div className="p-1 rounded-full bg-white/10 text-white">
+                      <Check className="w-3 h-3" />
+                    </div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button className="w-full py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold border border-white/10 transition-all">
+                Contactar Ventas
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Footer Links */}
         <div className="mt-24 pb-8 text-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
           <div className="flex items-center justify-center gap-4">
