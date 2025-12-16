@@ -47,20 +47,13 @@ interface PendingRouteData {
     vehicleType: VehicleType;
 }
 
-interface IsoStep {
-    step: string;
-    completed: boolean;
-}
-
 interface AppState {
     currentView: AppView;
     isLoading: boolean;
     registeredRoutes: RegisteredRoute[];
     pendingRouteData: PendingRouteData | null;
-    isoSteps: IsoStep[];
     setView: (view: AppView) => void;
     setLoading: (loading: boolean) => void;
-    toggleIsoStep: (stepName: string) => void;
     loadRoutes: () => Promise<void>;
     addRoute: (route: RegisteredRoute) => Promise<void>;
     removeRoute: (routeId: string) => Promise<void>;
@@ -81,21 +74,9 @@ export const useStore = create<AppState>()(
             isLoading: false,
             registeredRoutes: [],
             pendingRouteData: null,
-            isoSteps: [
-                { step: 'Auditoría Interna', completed: true },
-                { step: 'Gestión de No Conformidades', completed: true },
-                { step: 'Revisión por Dirección', completed: false },
-                { step: 'Certificación Externa', completed: false },
-            ],
 
             setView: (view) => set({ currentView: view }),
             setLoading: (loading) => set({ isLoading: loading }),
-
-            toggleIsoStep: (stepName) => set((state) => ({
-                isoSteps: state.isoSteps.map((s) =>
-                    s.step === stepName ? { ...s, completed: !s.completed } : s
-                )
-            })),
 
             // Cargar rutas desde Supabase
             loadRoutes: async () => {
@@ -103,28 +84,26 @@ export const useStore = create<AppState>()(
                     const routes = await routeService.getAll();
                     set({ registeredRoutes: routes });
                 } catch (error) {
-                    showToast.error('Error', error instanceof Error ? error.message : 'loadRoutes');
+                    showToast.error('Error al cargar rutas', error instanceof Error ? error.message : 'Intenta nuevamente');
                     // En caso de error, mantener las rutas en localStorage
                 }
             },
 
             // Agregar ruta (Supabase + Estado local)
             addRoute: async (route) => {
-                // Optimistic Update: Agregar inmediatamente al estado local
-                set((state) => ({
-                    registeredRoutes: [route, ...state.registeredRoutes] // Agregar al inicio para que se vea primero
-                }));
-
                 try {
                     await routeService.create(route);
-                    showToast.success('Ruta creada exitosamente');
-                } catch (error) {
-                    showToast.error('Error', error instanceof Error ? error.message : 'addRoute');
-                    // Rollback: Si falla, remover la ruta del estado local
                     set((state) => ({
-                        registeredRoutes: state.registeredRoutes.filter(r => r.id !== route.id)
+                        registeredRoutes: [...state.registeredRoutes, route]
                     }));
-                    throw error;
+                    showToast.success('Ruta guardada exitosamente');
+                } catch (error) {
+                    showToast.error('Error al guardar ruta', error instanceof Error ? error.message : 'Intenta nuevamente');
+                    // Fallback: agregar solo al estado local
+                    set((state) => ({
+                        registeredRoutes: [...state.registeredRoutes, route]
+                    }));
+                    throw error; // Re-throw para que el componente pueda manejarlo
                 }
             },
 
@@ -137,7 +116,7 @@ export const useStore = create<AppState>()(
                     }));
                     showToast.success('Ruta eliminada exitosamente');
                 } catch (error) {
-                    showToast.error('Error', error instanceof Error ? error.message : 'removeRoute');
+                    showToast.error('Error al eliminar ruta', error instanceof Error ? error.message : 'Intenta nuevamente');
                     // Fallback: eliminar solo del estado local
                     set((state) => ({
                         registeredRoutes: state.registeredRoutes.filter(route => route.id !== routeId)
@@ -155,9 +134,9 @@ export const useStore = create<AppState>()(
                             route.id === routeId ? { ...route, status } : route
                         )
                     }));
-                    showToast.success('Estado de ruta actualizado');
+                    showToast.success('Estado actualizado');
                 } catch (error) {
-                    showToast.error('Error', error instanceof Error ? error.message : 'updateRouteStatus');
+                    showToast.error('Error al actualizar estado', error instanceof Error ? error.message : 'Intenta nuevamente');
                     // Fallback: actualizar solo el estado local
                     set((state) => ({
                         registeredRoutes: state.registeredRoutes.map(route =>
@@ -187,7 +166,7 @@ export const useStore = create<AppState>()(
                     }));
                     showToast.success('Ruta iniciada correctamente');
                 } catch (error) {
-                    showToast.error('Error', error instanceof Error ? error.message : 'startRoute');
+                    showToast.error('Error al iniciar ruta', error instanceof Error ? error.message : 'Intenta nuevamente');
                     // Fallback local
                     set((state) => ({
                         registeredRoutes: state.registeredRoutes.map(route =>
@@ -213,7 +192,7 @@ export const useStore = create<AppState>()(
                     }));
                     showToast.success('Comprobante de entrega registrado');
                 } catch (error) {
-                    showToast.error('Error', error instanceof Error ? error.message : 'updateRouteWithProof');
+                    showToast.error('Error al registrar comprobante', error instanceof Error ? error.message : 'Intenta nuevamente');
                     // Fallback: actualizar solo el estado local
                     set((state) => ({
                         registeredRoutes: state.registeredRoutes.map(route =>
@@ -241,7 +220,7 @@ export const useStore = create<AppState>()(
                     }));
                     showToast.success('Calificación registrada exitosamente');
                 } catch (error) {
-                    showToast.error('Error', error instanceof Error ? error.message : 'updateRouteRating');
+                    showToast.error('Error al registrar calificación', error instanceof Error ? error.message : 'Intenta nuevamente');
                     // Fallback: actualizar solo el estado local
                     set((state) => ({
                         registeredRoutes: state.registeredRoutes.map(route =>
@@ -261,11 +240,8 @@ export const useStore = create<AppState>()(
             name: 'fleettech-storage',
             partialize: (state) => ({
                 currentView: state.currentView,
-                registeredRoutes: state.registeredRoutes,
-                isoSteps: state.isoSteps
+                registeredRoutes: state.registeredRoutes
             }),
         }
     )
 );
-
-
