@@ -1,3 +1,61 @@
+# Proyecto con Google Gemini y Supabase
+
+Este proyecto es una plantilla básica que integra Google Gemini para generación de texto e imágenes, y Supabase como base de datos y autenticación.
+
+## Tabla de Contenidos
+
+- [Descripción](#descripción)
+- [Características](#características)
+- [Scripts Disponibles](#scripts-disponibles)
+- [Inicio Rápido](#inicio-rápido)
+- [Tecnologías Usadas](#tecnologías-usadas)
+- [Configuración del Proyecto](#configuración-del-proyecto)
+- [Solución de Problemas](#solución-de-problemas)
+- [Seguridad](#seguridad)
+
+## Descripción
+
+Este proyecto utiliza Google Gemini para ofrecer capacidades avanzadas de IA, como generación de texto e imágenes a partir de descripciones. Supabase se utiliza para manejar la base de datos y la autenticación de usuarios.
+
+## Características
+
+- Generación de texto e imágenes con Google Gemini
+- Autenticación de usuarios
+- Almacenamiento de datos en tiempo real
+- Interfaz de usuario receptiva
+
+## Scripts Disponibles
+
+Para iniciar el proyecto, usa los siguientes comandos:
+
+```bash
+# Iniciar el servidor de desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
+
+# Iniciar en modo producción
+npm run start
+```
+
+## Inicio Rápido
+
+1. Asegúrate de tener [Node.js](https://nodejs.org/) y [npm](https://www.npmjs.com/) instalados.
+2. Clona este repositorio.
+3. Ejecuta `npm install` para instalar las dependencias.
+4. Configura tus claves de API en un archivo `.env.local` (ver [Configuración del Proyecto](#configuración-del-proyecto)).
+5. Ejecuta `npm run dev` para iniciar el servidor de desarrollo.
+6. Abre tu navegador y ve a `http://localhost:3000`.
+
+## Tecnologías Usadas
+
+- **Google Gemini**: Para generación de texto e imágenes.
+- **Supabase**: Como base de datos y servicio de autenticación.
+- **Vite**: Como empaquetador de módulos y servidor de desarrollo.
+- **TypeScript**: Para un desarrollo más seguro y escalable.
+
+## Configuración del Proyecto
 
 Antes de instalar, asegúrate de tener:
 - **Node.js** (versión 18 o superior) - [Descargar aquí](https://nodejs.org/)
@@ -65,7 +123,7 @@ http://localhost:3001
 Si el puerto 3000 está ocupado, Vite automáticamente usará el 3001 o siguiente disponible
 
 
-## 🔧 Solución de Problemas
+## Solución de Problemas
 
 ### Error: "Cannot find module"
 ```bash
@@ -94,7 +152,7 @@ npm install typescript --save-dev
 4. Revisa que las tablas estén creadas en Supabase
 
 
-## 🔐 Seguridad
+## Seguridad
 
 - **Nunca** compartas tu API key públicamente
 - **No subas** el archivo `.env.local` a GitHub

@@ -296,7 +296,10 @@ const DriverMobile: React.FC<DriverMobileProps> = ({ driverName = "Conductor" })
       (error) => {
         console.error('GPS Error:', error);
         setLocationError(error.message);
-        showToast.error('Error GPS', error.message);
+        // No mostrar alerta al usuario si niega el permiso
+        if (error.code !== error.PERMISSION_DENIED) {
+          showToast.error('Error GPS', error.message);
+        }
       },
       {
         enableHighAccuracy: true,
