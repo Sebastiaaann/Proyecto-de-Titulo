@@ -88,3 +88,7 @@ Consulta la sección de solución de problemas en este archivo para resolver err
 - **No subas** el archivo `.env.local` a repositorios públicos.
 - Usa variables de entorno en producción para proteger información sensible.
 
+## 👤 Autor
+Fletes Marcelo
+
+GitHub: [@Sebastiaaann](https://github.com/Sebastiaaann)
