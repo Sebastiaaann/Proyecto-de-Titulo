@@ -1,3 +1,0 @@
-# SUPABASE_DELIVERY_PROOF_MIGRATION
-
-...existing content...

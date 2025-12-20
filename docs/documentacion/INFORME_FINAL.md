@@ -1,3 +1,0 @@
-# INFORME_FINAL
-
-...existing content...

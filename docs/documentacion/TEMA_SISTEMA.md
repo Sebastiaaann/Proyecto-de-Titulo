@@ -1,3 +1,0 @@
-# TEMA_SISTEMA
-
-...existing content...
