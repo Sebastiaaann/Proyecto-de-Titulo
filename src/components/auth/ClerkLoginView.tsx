@@ -10,7 +10,7 @@ import {
     SignUpButton,
     UserButton,
 } from "@clerk/clerk-react";
-import { Truck } from 'lucide-react';
+import { FleetTechLogo } from '@components/common/FleetTechLogo';
 
 export function ClerkLoginView() {
     return (
@@ -20,11 +20,11 @@ export function ClerkLoginView() {
                 <div className="text-center">
                     <div className="flex justify-center mb-4">
                         <div className="p-4 bg-brand-500/10 rounded-2xl border border-brand-500/20">
-                            <Truck className="w-12 h-12 text-brand-500" />
+                            <FleetTechLogo size={48} className="text-brand-500" />
                         </div>
                     </div>
                     <h1 className="text-4xl font-bold text-white mb-2">
-                        FleetesM
+                        FleetTech
                     </h1>
                     <p className="text-slate-400 text-lg">
                         Gestión Inteligente de Flotas

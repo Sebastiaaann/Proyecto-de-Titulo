@@ -12,7 +12,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react';
 import { useAuth } from '@hooks/useAuth';
-import { showToast } from '../Toast';
+import { showToast } from '@components/common/Toast';
 
 // Constantes de seguridad
 const MAX_LOGIN_ATTEMPTS = 5;
@@ -285,11 +285,9 @@ export const LoginFormSecure: React.FC = () => {
               setEmailError('');
             }}
             onBlur={handleEmailBlur}
-            className={`block w-full pl-12 pr-4 py-3 bg-dark-900 border ${
-              emailError ? 'border-red-500' : 'border-white/10'
-            } rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 ${
-              emailError ? 'focus:ring-red-500' : 'focus:ring-brand-500'
-            } focus:border-transparent transition-all duration-200 hover:border-white/20`}
+            className={`block w-full pl-12 pr-4 py-3 bg-dark-900 border ${emailError ? 'border-red-500' : 'border-white/10'
+              } rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 ${emailError ? 'focus:ring-red-500' : 'focus:ring-brand-500'
+              } focus:border-transparent transition-all duration-200 hover:border-white/20`}
             placeholder="tu@email.com"
             disabled={isSubmitting || loading || isLockedOut}
             autoComplete="email"
@@ -320,11 +318,9 @@ export const LoginFormSecure: React.FC = () => {
               setPasswordError('');
             }}
             onBlur={handlePasswordBlur}
-            className={`block w-full pl-12 pr-4 py-3 bg-dark-900 border ${
-              passwordError ? 'border-red-500' : 'border-white/10'
-            } rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 ${
-              passwordError ? 'focus:ring-red-500' : 'focus:ring-brand-500'
-            } focus:border-transparent transition-all duration-200 hover:border-white/20`}
+            className={`block w-full pl-12 pr-4 py-3 bg-dark-900 border ${passwordError ? 'border-red-500' : 'border-white/10'
+              } rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 ${passwordError ? 'focus:ring-red-500' : 'focus:ring-brand-500'
+              } focus:border-transparent transition-all duration-200 hover:border-white/20`}
             placeholder="••••••••"
             disabled={isSubmitting || loading || isLockedOut}
             minLength={MIN_PASSWORD_LENGTH}

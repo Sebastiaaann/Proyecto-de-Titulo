@@ -10,7 +10,8 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { vehicleService } from '@services/databaseService';
 import DeliveryProofViewer from '@components/delivery/DeliveryProofViewer';
 import SignaturePad from '@components/delivery/SignaturePad';
-import { enableDemoMode } from '@utils/demoData';
+import { enableDemoMode, DEMO_VEHICLES, DEMO_ROUTES, useDemoData } from '@utils/demoData';
+import { useClerkAuth } from '@hooks/useClerkAuth';
 
 import RouteDetailsModal from '@components/dashboard/RouteDetailsModal';
 import { Trash2, Eye } from 'lucide-react';
@@ -44,6 +45,7 @@ const sparklineData = {
 
 const Dashboard: React.FC = () => {
    const { confirm, ConfirmComponent } = useConfirm();
+   const { isDemoUser } = useClerkAuth();
    const [aiInsight, setAiInsight] = useState("Inicializando FleetTech AI...");
    const [dateRange, setDateRange] = useState('month');
    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -57,10 +59,14 @@ const Dashboard: React.FC = () => {
    const updateRouteWithProof = useStore((state) => state.updateRouteWithProof);
    const removeRoute = useStore((state) => state.removeRoute);
 
+   // Usar datos demo si el usuario está en modo demo
+   const displayVehicles = useDemoData(vehicles, DEMO_VEHICLES, isDemoUser());
+   const displayRoutes = useDemoData(registeredRoutes, DEMO_ROUTES, isDemoUser());
+
    // Filter routes based on selected filter
    const filteredRoutes = routeFilter === 'All'
-      ? registeredRoutes
-      : registeredRoutes.filter(route => route.status === routeFilter);
+      ? displayRoutes
+      : displayRoutes.filter(route => route.status === routeFilter);
 
    // Cargar vehículos desde Supabase
    useEffect(() => {
@@ -88,28 +94,28 @@ const Dashboard: React.FC = () => {
    };
 
    // FLOTA ACTIVA: Calcular vehículos activos vs total
-   const activeVehicles = vehicles.filter(v => v.status === 'Active').length;
-   const totalVehicles = vehicles.length;
+   const activeVehicles = displayVehicles.filter(v => v.status === 'Active').length;
+   const totalVehicles = displayVehicles.length;
    const fleetChange = totalVehicles > 0 ? Math.round(((activeVehicles - totalVehicles * 0.9) / (totalVehicles * 0.9)) * 100) : 0;
 
    // EFICIENCIA: Calcular consumo promedio basado en nivel de combustible
-   const avgFuelEfficiency = totalVehicles > 0 ? vehicles.reduce((sum, v) => sum + (v.fuelLevel || 0), 0) / totalVehicles / 100 * 4.5 : 0;
+   const avgFuelEfficiency = totalVehicles > 0 ? displayVehicles.reduce((sum, v) => sum + (v.fuelLevel || 0), 0) / totalVehicles / 100 * 4.5 : 0;
    const fuelEfficiency = avgFuelEfficiency.toFixed(1);
    const fuelVsTarget = (avgFuelEfficiency - 3.3).toFixed(1);
 
    // MANTENIMIENTO: Contar vehículos en mantenimiento y próximos servicios
-   const maintenanceVehicles = vehicles.filter(v => v.status === 'Maintenance').length;
-   const upcomingService = vehicles.filter(v => {
+   const maintenanceVehicles = displayVehicles.filter(v => v.status === 'Maintenance').length;
+   const upcomingService = displayVehicles.filter(v => {
       const serviceDate = new Date(v.nextService);
       const today = new Date();
       const daysUntil = (serviceDate.getTime() - today.getTime()) / (1000 * 3600 * 24);
       return daysUntil <= 7 && daysUntil > 0;
    }).length;
    const totalPending = maintenanceVehicles + upcomingService;
-   const criticalCount = vehicles.filter(v => (v.fuelLevel || 0) < 20 || v.status === 'Maintenance').length;
+   const criticalCount = displayVehicles.filter(v => (v.fuelLevel || 0) < 20 || v.status === 'Maintenance').length;
 
    // INGRESOS: Calcular desde rutas registradas
-   const registeredRevenue = registeredRoutes.reduce((acc, route) => {
+   const registeredRevenue = displayRoutes.reduce((acc, route) => {
       const priceStr = route.estimatedPrice || '0';
       const price = parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
       return acc + price;
@@ -122,14 +128,14 @@ const Dashboard: React.FC = () => {
    const revenueGrowth = ((registeredRevenue / baseRevenue) * 100).toFixed(0);
 
    useEffect(() => {
-      if (vehicles.length > 0 && !loadingVehicles) {
+      if (displayVehicles.length > 0 && !loadingVehicles) {
          const fetchInsight = async () => {
-            const insight = await analyzeFleetHealth(vehicles);
+            const insight = await analyzeFleetHealth(displayVehicles);
             setAiInsight(insight);
          };
          fetchInsight();
       }
-   }, [vehicles, loadingVehicles]);
+   }, [displayVehicles, loadingVehicles]);
 
    const handleSaveSignature = async (signature: string) => {
       if (!routeToSign) return;
@@ -244,9 +250,9 @@ const Dashboard: React.FC = () => {
                   <div className="flex items-center gap-1.5 text-sm font-semibold text-emerald-400 mb-4 relative z-10">
                      <ArrowUpRight className="w-4 h-4" /> +{revenueGrowth}% vs mes anterior
                   </div>
-                  {registeredRoutes.length > 0 && (
+                  {displayRoutes.length > 0 && (
                      <div className="text-xs text-slate-400 relative z-10 font-medium">
-                        {registeredRoutes.length} ruta{registeredRoutes.length !== 1 ? 's' : ''} nueva{registeredRoutes.length !== 1 ? 's' : ''} (+${(registeredRevenue / 1000).toFixed(0)}K)
+                        {displayRoutes.length} ruta{displayRoutes.length !== 1 ? 's' : ''} nueva{displayRoutes.length !== 1 ? 's' : ''} (+${(registeredRevenue / 1000).toFixed(0)}K)
                      </div>
                   )}
                   <div className="absolute bottom-0 left-0 right-0 h-20 opacity-40 group-hover:opacity-60 transition-opacity">
